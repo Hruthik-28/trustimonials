@@ -6,10 +6,10 @@ import { NextRequest } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { spaceId: string } }
+  { params }: { params: Promise<{ spaceId: string }> }
 ) {
   const { userId } = await auth();
-  const { spaceId } = params;
+  const spaceId = (await params).spaceId;
 
   if (!userId) {
     return Response.json(
