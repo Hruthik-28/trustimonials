@@ -97,12 +97,12 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error creating space", error);
     return Response.json(
       {
         success: false,
-        message: "Failed to create space" + error.message,
+        message: "Failed to create space",
       },
       { status: 500 }
     );

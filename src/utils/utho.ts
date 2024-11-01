@@ -55,10 +55,8 @@ export const uploadFileToBucket = async (
         message: uploadResponse.message || "File upload Failed",
       };
     }
-  } catch (error: any) {
-    console.error("Upload error in :", error.message);
-    throw new Error(
-      `Failed to upload file: ${error.response?.data?.message || error.message}`
-    );
+  } catch (error) {
+    console.error("Upload error in utho.ts:");
+    throw new Error(`Failed to upload file to utho`);
   }
 };
