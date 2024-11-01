@@ -9,7 +9,7 @@ export async function POST(
   context: { params: { spaceId: string } }
 ) {
   const { userId } = await auth();
-  const { spaceId } = await context.params;
+  const spaceId = context.params.spaceId;
 
   if (!userId) {
     return Response.json(
