@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enum for different types of testimonial collection formats
+enum CollectionType {
+  text
+  video
+  textAndVideo
+}
+
+// Enum for themes
+enum Theme {
+  light
+  dark
+}
+
+model User {
+  id          String  @id @default(uuid())
+  clerkUserId String? @unique
+
+  email    String  @unique
+  name     String?
+  imageUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spaces Space[]
+}
+
+model Space {
+  id     String @id @default(uuid())
+  userId String
+
+  name      String
+  imageUrl  String
+  imageId   String
+  message   String
+  questions String[]
+  status    Boolean? @default(true)
+  slug      String?
+
+  collectName        Boolean  @default(true)
+  collectEmail       Boolean? @default(false)
+  collectCompany     Boolean? @default(false)
+  collectSocialLink  Boolean? @default(false)
+  collectAddress     Boolean? @default(false)
+  collectStarRatings Boolean  @default(true)
+
+  collectionType CollectionType @default(textAndVideo)
+  theme          Theme          @default(light)
+
+  buttonColor String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ThankYou     ThankYou[]
+  testimonials Testimonials[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model ThankYou {
+  id      String @id @default(uuid())
+  spaceId String
+
+  imageUrl String?
+  imageId  String?
+
+  title   String? @default("Thank You!")
+  message String? @default("Thank you so much for your shoutout! It means a ton for us! 🙏")
+
+  hideImage  Boolean? @default(false)
+  allowShare Boolean  @default(false)
+  redirectTo String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  space Space @relation(fields: [spaceId], references: [id])
+}
+
+model Testimonials {
+  id      String @id @default(uuid())
+  spaceId String
+
+  starRating Int?
+  message    String?
+  name       String?
+  email      String?
+  company    String?
+  socialLink String?
+  address    String?
+
+  photoUrl String?
+  photoId  String?
+  videoUrl String?
+  videoId  String?
+
+  collectionType CollectionType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  space Space @relation(fields: [spaceId], references: [id])
+}
