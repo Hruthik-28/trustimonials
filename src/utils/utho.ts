@@ -56,7 +56,7 @@ export const uploadFileToBucket = async (
       };
     }
   } catch (error) {
-    console.error("Upload error in utho.ts:");
+    console.error("Upload error in utho.ts:", error);
     throw new Error(`Failed to upload file to utho`);
   }
 };
